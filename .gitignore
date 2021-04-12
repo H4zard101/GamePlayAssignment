@@ -2,13 +2,13 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-GitHub Repo/GamePlayAssignment/[Ll]ibrary/
-GitHub Repo/GamePlayAssignment/[Tt]emp/
-GitHub Repo/GamePlayAssignment/[Oo]bj/
-GitHub Repo/GamePlayAssignment/[Bb]uild/
-GitHub Repo/GamePlayAssignment/[Bb]uilds/
-GitHub Repo/GamePlayAssignment/[Ll]ogs/
-GitHub Repo/GamePlayAssignment/[Mm]emoryCaptures/
+GamePlayAssignment/[Ll]ibrary/
+GamePlayAssignment/[Tt]emp/
+GamePlayAssignment/[Oo]bj/
+GamePlayAssignment/[Bb]uild/
+GamePlayAssignment/[Bb]uilds/
+GamePlayAssignment/[Ll]ogs/
+GamePlayAssignment/[Mm]emoryCaptures/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
