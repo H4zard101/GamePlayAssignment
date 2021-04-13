@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TriggerButtonPressed : MonoBehaviour
+public class ButtonPressedRight : MonoBehaviour
 {
     public GameObject Text;
     public Animator anim;
     public Animator anim2;
 
-    public static bool buttonPressedLeft = false;
+    public static bool buttonPressedRight = false;
     public void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
@@ -17,7 +17,7 @@ public class TriggerButtonPressed : MonoBehaviour
             {
                 anim.SetBool("trigger", true);
                 anim2.SetBool("triggered", true);
-                buttonPressedLeft = true;
+                buttonPressedRight = true;
             }
             Text.SetActive(true);
         }
