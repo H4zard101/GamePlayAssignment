@@ -65,7 +65,7 @@ namespace Attempt_2.camera
             // transform.rotation = rotateTo;
         }
 
-        private void LateUpdate()
+        private void FixedUpdate()
         {
             CameraUpdater();
         }

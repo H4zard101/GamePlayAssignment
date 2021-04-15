@@ -30,7 +30,7 @@ namespace Attempt_2.camera
             RaycastHit hit;
             if (Physics.Linecast(transform.parent.position, desiredCamPos, out hit, ~ignoreThisLayerMask))
             {
-                currentDistance = Mathf.Clamp((hit.distance * 0.87f), minDistance, maxDistance);
+                currentDistance = Mathf.Clamp((hit.distance * 0.07f), minDistance, maxDistance);
             }
             else
             {
