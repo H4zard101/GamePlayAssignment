@@ -19031,9 +19031,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6561fd7440225664f906c81f2f51a6bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 2004354476}
-  Door: {fileID: 2004354472}
-  Speed: 5
+  door: {fileID: 2004354471}
+  doorOpening: 0
+  doorClosing: 0
 --- !u!1 &1529936443
 GameObject:
   m_ObjectHideFlags: 0
@@ -28374,7 +28374,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 454483125339046692}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.083330154, y: -0.41270852, z: -10.185829}
+  m_LocalPosition: {x: 22.22, y: -0.41270852, z: -23.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 205695075307575794}
