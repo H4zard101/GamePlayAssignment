@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TiltPlatformBack : MonoBehaviour
 {
-    public float speed = 5.0F;
-    public float returnspeed = -5.0F;
+    public float speed = 50.0f;
+    public float speed2 = 30.0F;
     public Transform origintransform;
     public GameObject platform;
 
@@ -28,6 +28,6 @@ public class TiltPlatformBack : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         Debug.Log("exit tilt");
-        platform.transform.Rotate(Vector3.right * speed * Time.deltaTime);
+        platform.transform.Rotate(Vector3.right * speed2 * Time.deltaTime);
     }
 }
