@@ -7,6 +7,9 @@ TagManager:
   - Hammer
   - PowerupSprint
   - PowerupDJ
+  - Equipped
+  - Moving Platform
+  - Button
   layers:
   - Default
   - TransparentFX
@@ -18,8 +21,8 @@ TagManager:
   - 
   - 
   - Ground
-  - 
-  - 
+  - Player
+  - Hitlayer
   - 
   - 
   - 

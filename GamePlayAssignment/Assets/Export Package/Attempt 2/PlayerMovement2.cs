@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics.SymbolStore;
 using Attempt_2.Animation;
+using Attempt_2.Objects.Doors;
 using UnityEngine;
 using Vector2 = System.Numerics.Vector2;
 
@@ -34,6 +36,7 @@ namespace Attempt_2
         private bool pressedJump;
         private bool isJumping;
         private bool pressedDraw;
+        private bool pressedAttack;
         
         /** SYSTEM AND CONSTANTS **/ 
         
@@ -45,11 +48,15 @@ namespace Attempt_2
 
         private bool maxJumpCountReached;
         
-        private float gravity = 20.0F;
+        private float gravity = 25.0F;
         private float maxVelocityChange = 10.0F;
         private float groundCheckDistance = .2f;
         
+        public int currentAttackCount;
+        public int queuedHits;
+        
         [SerializeField] private LayerMask groundMask;
+        public LayerMask enemyLayers;
         
         /** CAMERA **/
 
@@ -72,7 +79,8 @@ namespace Attempt_2
         private static readonly int PressedUnsheathTrg = Animator.StringToHash("pressed unsheath trg");
         private static readonly int JumpCount = Animator.StringToHash("jump count");
         private static readonly int MaxJumpCountReached = Animator.StringToHash("max jump count reached");
-        
+        private static readonly int AttackCount = Animator.StringToHash("attack count");
+
         /** DEBUG **/
         public float Debug_current_speed;
         
@@ -88,9 +96,12 @@ namespace Attempt_2
         {
             DebugSpeed();
             
+            //Debug.Log(pressedAttack);
+            
             isGrounded = Physics.CheckSphere(transform.position,groundCheckDistance, groundMask);
 
             Inputs();
+            PlayerAttack();
             PlayerDraw();
             PlayerJump();
             Animation();
@@ -98,8 +109,8 @@ namespace Attempt_2
         private void Inputs()
         {
             pressedJump = Input.GetButtonDown("Jump");
-
             pressedDraw = Input.GetButtonDown("Fire1");
+            pressedAttack = Input.GetButtonDown("Fire3");
             
             moveHorizontal = Input.GetAxis("Horizontal");
             moveVertical   = Input.GetAxis("Vertical");
@@ -121,7 +132,50 @@ namespace Attempt_2
             // We apply gravity manually for more tuning control
             //playerRigidBody.AddForce(Vector3(0, -gravity * playerRigidBody.mass, 0));
         }
-        
+
+        private void PlayerAttack()
+        {
+            
+            if (pressedAttack && currentAttackCount < 3)
+            {
+                currentAttackCount++;
+            }
+            
+            if (currentAttackCount <= queuedHits)
+            {
+                currentAttackCount = 0;
+                queuedHits = 0;
+            }
+        }
+
+        private void Hit()
+        {
+            queuedHits++;
+            
+            var hitEnemies = Physics.OverlapSphere(transform.position + 
+                                                   transform.forward + new Vector3(0,1.5F,0), 1, enemyLayers);
+            //Debug.Log(hitEnemies);
+            foreach (Collider objectHit in hitEnemies)
+            {
+                if (objectHit.CompareTag("Enemy"))
+                {
+                    
+                }
+                else if (objectHit.CompareTag("Button"))
+                {
+                    objectHit.GetComponent<SwitchScript>().pressed = 
+                        !objectHit.GetComponent<SwitchScript>().pressed;
+                    //Debug.Log("it works! Has hit: " + objectHit.name);
+                }
+            }
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.DrawWireSphere(transform.position + 
+                                  transform.forward + new Vector3(0,1.5F,0), 1);
+        }
+
         private void PlayerDraw()
         {
             if (hasHammer && pressedDraw)
@@ -242,12 +296,14 @@ namespace Attempt_2
                 playerAnimator.SetTrigger(PressedUnsheathTrg);
                 StartCoroutine(Unsheath());
             }
+            
             playerAnimator.SetBool(MaxJumpCountReached, maxJumpCountReached);
             playerAnimator.SetInteger(JumpCount, currentJumpCount);
             playerAnimator.SetFloat(MovementSpeed, currentSpeed);
             playerAnimator.SetBool (PressingJump, pressedJump);
             playerAnimator.SetBool (Grounded,isGrounded);
             playerAnimator.SetFloat(VelocityY, playerRigidBody.velocity.y);
+            playerAnimator.SetInteger(AttackCount, currentAttackCount);
         }
         private void Set(int value)
         {
@@ -257,7 +313,6 @@ namespace Attempt_2
         }
         IEnumerator Unsheath()
         {
-            
             yield return new WaitForSeconds(.3f);
             GameObject.FindWithTag("Equipped").GetComponent<Renderer>().enabled = equipHammer;
             playerAnimator.ResetTrigger(PressedUnsheathTrg);
