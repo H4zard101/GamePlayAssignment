@@ -10,6 +10,7 @@ TagManager:
   - Equipped
   - Moving Platform
   - Button
+  - Portal1
   layers:
   - Default
   - TransparentFX

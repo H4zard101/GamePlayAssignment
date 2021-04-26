@@ -24,7 +24,7 @@ namespace Attempt_2
         private bool equipHammer;
         private bool canJump = true;
         
-        private float jumpHeight = 2.0F;
+        public float jumpHeight = 2.0F;
         
         /** INPUTS AND DIRECTIONS **/
         public float moveVertical;
@@ -48,7 +48,7 @@ namespace Attempt_2
 
         private bool maxJumpCountReached;
         
-        private float gravity = 25.0F;
+        public float gravity = 25.0F;
         private float maxVelocityChange = 10.0F;
         private float groundCheckDistance = .2f;
         
