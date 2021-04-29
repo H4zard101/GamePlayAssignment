@@ -28,6 +28,7 @@ public class TriggerButtonPressed : MonoBehaviour
         if (doorOpening)
         {
             mainCam.enabled = false;
+            doorPanCam.Reset();
             doorPanCam.enabled = true;
         }
         if (doorOpen)
@@ -59,11 +60,11 @@ public class TriggerButtonPressed : MonoBehaviour
     IEnumerator openDoor()
     {
         doorOpening = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         anim.SetBool("trigger", true);
         anim2.SetBool("triggered", true);
         buttonPressedLeft = true;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
         doorOpening = false;
         doorOpen = true;
     }

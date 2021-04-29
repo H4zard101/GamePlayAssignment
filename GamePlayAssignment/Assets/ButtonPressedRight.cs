@@ -28,6 +28,7 @@ public class ButtonPressedRight : MonoBehaviour
         if (doorOpening)
         {
             mainCam.enabled = false;
+            doorPanCam.Reset();
             doorPanCam.enabled = true;
         }
         if (doorOpen)
@@ -61,7 +62,7 @@ public class ButtonPressedRight : MonoBehaviour
     IEnumerator openDoor()
     {
         doorOpening = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         anim.SetBool("trigger", true);
         anim2.SetBool("triggered", true);
         buttonPressedRight = true;
