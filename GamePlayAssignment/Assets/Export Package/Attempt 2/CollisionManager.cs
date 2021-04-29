@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Attempt_2
+namespace Attempt_2.Player
 {
     public class CollisionManager : MonoBehaviour
     {
@@ -20,6 +20,7 @@ namespace Attempt_2
         // Start is called before the first frame update
         void Awake()
         {
+            stats = GameObject.FindWithTag("Player").GetComponent<PlayerMovement2>();
             stats = gameObject.GetComponent<PlayerMovement2>();
         }
 

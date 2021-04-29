@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Attempt_2
+namespace Attempt_2.Objects.Platforms
 {
     public class PlatformTriggerScript : MonoBehaviour
     {

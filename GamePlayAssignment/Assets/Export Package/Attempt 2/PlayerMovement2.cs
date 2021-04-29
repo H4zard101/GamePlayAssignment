@@ -51,7 +51,9 @@ namespace Attempt_2
         public float gravity = 25.0F;
         private float maxVelocityChange = 10.0F;
         private float groundCheckDistance = .2f;
-        
+
+        public float attackTimer;
+        public float attackTimerGoal;
         public int currentAttackCount;
         public int queuedHits;
         
@@ -140,11 +142,41 @@ namespace Attempt_2
             {
                 currentAttackCount++;
             }
+
+            /***
+             * KNOWN ISSUE
+             * the player's attack count wont reset if the player;
+             * A: times an attack *after* the hit function has been called.
+             * B: presses the button when falling.
+             *
+             * I have added catches for these events, though they're not exactly
+             * good, but they work.
+             */
             
-            if (currentAttackCount <= queuedHits)
+            if (currentAttackCount == currentAttackCount)
+            {
+                attackTimer += Time.deltaTime;
+            }
+
+            if (equipHammer)
+            {
+                attackTimerGoal = 2F;
+            }
+            else
+            {
+                attackTimerGoal = 1.6F;
+            }
+            
+            if (attackTimer >= attackTimerGoal)
+            {
+                currentAttackCount = 0;
+            }
+            
+            if (currentAttackCount <= queuedHits || pressedJump)
             {
                 currentAttackCount = 0;
                 queuedHits = 0;
+                attackTimer = 0;
             }
         }
 

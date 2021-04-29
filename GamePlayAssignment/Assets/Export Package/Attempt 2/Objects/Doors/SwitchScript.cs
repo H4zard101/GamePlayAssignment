@@ -7,8 +7,9 @@ namespace Attempt_2.Objects.Doors
     {
         public enum ButtonType
         {
-            PushButton,
-            Lever
+            SimplePushButton,
+            SimpleLever,
+            Puzzle
         }
         [Header("Type of Button")]
         public ButtonType button;
@@ -32,17 +33,17 @@ namespace Attempt_2.Objects.Doors
             
         }
         
-        
-        
         private void Update()
         {
             switch (button)
             {
-                case ButtonType.PushButton: 
+                case ButtonType.SimplePushButton: 
                     PushButton(); 
                     break;
-                case ButtonType.Lever: 
+                case ButtonType.SimpleLever: 
                     PushLever(); 
+                    break;
+                case ButtonType.Puzzle:
                     break;
                 default: 
                     throw new ArgumentOutOfRangeException();

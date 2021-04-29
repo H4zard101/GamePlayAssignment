@@ -27,10 +27,13 @@ public class DoorOpenScript : MonoBehaviour
     [Header("Number of Switches Needed")]
     public GameObject[] switches;
 
-    [Header("Switch Timer")] 
+    [Header("Switch Timer")]
+    [Tooltip("This float is the number of seconds until the door opens.")]
     public bool timer;
     [Range(0,20)]
     public float switchTimer;
+
+    private float switchTimerStart;
     
     
     [Space(10)][Range(0,10)]
@@ -73,7 +76,6 @@ public class DoorOpenScript : MonoBehaviour
         
         for (int i = 0; i < switches.Length; i++)
         {
-            
             if (switches[i].GetComponent<SwitchScript>().pressed)
             {
                 buttonsPressed++;
@@ -82,19 +84,27 @@ public class DoorOpenScript : MonoBehaviour
 
         if (buttonsPressed == switches.Length)
         {
-            switch (door)
+            if (timer && switchTimerStart < switchTimer)
             {
-                case DoorType.Vertical:
-                    MoveVertical();
-                    break;
-                case DoorType.Horizontal:
-                    MoveHorizontal();
-                    break;
-                /*case DoorType.DoubleDoor:
-                    break;*/
-                default:
-                    throw new ArgumentOutOfRangeException();
+                switchTimerStart += Time.deltaTime;
             }
+            else
+            {
+                switch (door)
+                {
+                    case DoorType.Vertical:
+                        MoveVertical();
+                        break;
+                    case DoorType.Horizontal:
+                        MoveHorizontal();
+                        break;
+                    /*case DoorType.DoubleDoor:
+                                break;*/
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            
         }
     }
 
