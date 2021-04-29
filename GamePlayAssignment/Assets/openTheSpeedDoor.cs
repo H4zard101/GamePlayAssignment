@@ -5,10 +5,6 @@ using UnityEngine;
 public class openTheSpeedDoor : MonoBehaviour
 {
 
-    //public Animator anim;
-    //public Transform Door;
-    //public float Speed = 5.0F;
-
     public GameObject door;
     public bool doorOpening;
     public bool doorClosing;
@@ -32,7 +28,7 @@ public class openTheSpeedDoor : MonoBehaviour
         }
         if (doorClosing)
         {
-            door.transform.Translate(Vector3.down * Time.deltaTime * 1);
+            door.transform.Translate(Vector3.down * Time.deltaTime * 0.5f);
             if (door.transform.position.y < 12.98)
             {
                 doorClosing = false;
@@ -45,8 +41,6 @@ public class openTheSpeedDoor : MonoBehaviour
         if (other.tag == "Player")
         {
             Debug.Log("Door Move Up");
-            /*anim.SetBool("Open", true);
-            anim.SetBool("Close", false);*/
             doorOpening = true;
         }
     }
@@ -54,9 +48,6 @@ public class openTheSpeedDoor : MonoBehaviour
     public void OnTriggerExit(Collider other)
     {
         Debug.Log("Door Move Down");
-        /*anim.SetBool("Close", false);
-        anim.SetBool("Open", false);
-        anim.SetBool("StopAnimation", true);*/
         doorClosing = true;
     }
 }

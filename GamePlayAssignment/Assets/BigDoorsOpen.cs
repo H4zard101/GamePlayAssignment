@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BigDoorsOpen : MonoBehaviour
 {
-
     public Animator anim;
 
     // Update is called once per frame
