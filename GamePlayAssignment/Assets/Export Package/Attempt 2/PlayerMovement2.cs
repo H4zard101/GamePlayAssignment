@@ -56,14 +56,24 @@ namespace Attempt_2
         public float attackTimerGoal;
         public int currentAttackCount;
         public int queuedHits;
-        
+
+        public float enemeyHealth = 100;
+        public float playerDamage = 30;
+
+        public GameObject instancePoint1;
+        public GameObject instancePoint2;
+
+        public GameObject NewEnemy;
+        public GameObject enemy;
+
+
         [SerializeField] private LayerMask groundMask;
         public LayerMask enemyLayers;
         
         /** CAMERA **/
 
         public Transform cam;
-        
+        public Material enemyMat;
         private float smoothTurnVelocity;
         private float smoothTurnTime = .1F;
        
@@ -91,6 +101,8 @@ namespace Attempt_2
         {
             playerRigidBody = GetComponent<Rigidbody>();
             playerAnimator = GetComponent<Animator>();
+
+            enemyMat.color = Color.white;
         }
         
         // Update is called once per frame
@@ -191,7 +203,21 @@ namespace Attempt_2
             {
                 if (objectHit.CompareTag("Enemy"))
                 {
-                    
+                    Debug.Log("Hit");
+                    enemyMat.color = Color.red;
+
+                    enemeyHealth = enemeyHealth - playerDamage;
+
+                    if(enemeyHealth <= 0)
+                    {
+                        Debug.Log("He dead");
+                        Destroy(enemy);
+                        Instantiate(NewEnemy, instancePoint1.transform.position, instancePoint1.transform.rotation);
+                        Instantiate(NewEnemy, instancePoint2.transform.position, instancePoint2.transform.rotation);
+
+                    }
+                    StartCoroutine(changeColour());
+
                 }
                 else if (objectHit.CompareTag("Button"))
                 {
@@ -201,6 +227,13 @@ namespace Attempt_2
                 }
             }
         }
+
+        public IEnumerator changeColour()
+        {
+            yield return new WaitForSeconds(0.5F);
+            enemyMat.color = Color.white;
+        }
+
 
         private void OnDrawGizmosSelected()
         {

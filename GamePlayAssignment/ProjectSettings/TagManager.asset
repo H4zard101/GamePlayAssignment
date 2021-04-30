@@ -11,6 +11,7 @@ TagManager:
   - Moving Platform
   - Button
   - Portal1
+  - Enemy
   layers:
   - Default
   - TransparentFX
