@@ -25,6 +25,8 @@ namespace Attempt_2
         private bool canJump = true;
         
         public float jumpHeight = 2.0F;
+
+        public float attackDamage = 30;
         
         /** INPUTS AND DIRECTIONS **/
         public float moveVertical;
@@ -191,7 +193,9 @@ namespace Attempt_2
             {
                 if (objectHit.CompareTag("Enemy"))
                 {
-                    
+                    objectHit.GetComponent<EnemyController>().enemyHealth -= attackDamage;
+                    objectHit.GetComponent<EnemyController>().takeDamage = true;
+
                 }
                 else if (objectHit.CompareTag("Button"))
                 {
