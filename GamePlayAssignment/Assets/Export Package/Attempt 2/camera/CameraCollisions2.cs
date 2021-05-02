@@ -13,11 +13,15 @@ namespace Attempt_2.camera
 
         public LayerMask ignoreThisLayerMask;
 
-        private Vector3 dollyDir;
+        public bool notInSpline = true;
+        public Vector3 dollyDir;
+        public Vector3 originalPosition;
 
         // Start is called before the first frame update
         void Awake()
         {
+            originalPosition = transform.position;
+            
             var localPosition = transform.localPosition;
             dollyDir = localPosition.normalized;
             currentDistance = localPosition.magnitude;
@@ -26,19 +30,20 @@ namespace Attempt_2.camera
         // Update is called once per frame
         void Update()
         {
-            Vector3 desiredCamPos = transform.parent.TransformPoint((dollyDir * maxDistance));
-            RaycastHit hit;
-            if (Physics.Linecast(transform.parent.position, desiredCamPos, out hit, ~ignoreThisLayerMask))
-            {
-                currentDistance = Mathf.Clamp((hit.distance * 0.87f), minDistance, maxDistance);
-            }
-            else
-            {
-                currentDistance = maxDistance;
-            }
 
-            transform.localPosition = Vector3.Lerp(transform.localPosition, dollyDir * currentDistance, Time.deltaTime * smooth);
-            
+                
+                Vector3 desiredCamPos = transform.parent.TransformPoint((dollyDir * maxDistance));
+                RaycastHit hit;
+                if (Physics.Linecast(transform.parent.position, desiredCamPos, out hit, ~ignoreThisLayerMask))
+                {
+                    currentDistance = Mathf.Clamp((hit.distance * 0.87f), minDistance, maxDistance);
+                }
+                else
+                {
+                    currentDistance = maxDistance;
+                }
+
+                transform.localPosition = Vector3.Lerp(transform.localPosition, dollyDir * currentDistance, Time.deltaTime * smooth);
         }
     }
 }

@@ -64,14 +64,14 @@ namespace Attempt_2.Objects.Doors
 
         void PushButton()
         {
-           // if (pressed)
-            //{
-             //   transform.localPosition += Vector3.forward * (pressSpeed * Time.deltaTime);
-            //}
-            //else
-            //{
-              //  transform.localPosition = originalVector3;
-            //}
+            if (pressed)
+            {
+                transform.localPosition += Vector3.forward * (pressSpeed * Time.deltaTime);
+            }
+            else
+            {
+                transform.localPosition = originalVector3;
+            }
         }
     }
 }

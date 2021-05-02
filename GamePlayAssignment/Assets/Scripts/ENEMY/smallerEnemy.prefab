@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 34592487279137951}
   - component: {fileID: 34592487279137950}
   m_Layer: 11
-  m_Name: Boss
+  m_Name: smallerEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 1
   m_BaseOffset: 0.5
-  m_WalkableMask: 1
+  m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!33 &34592487279137920
 MeshFilter:
@@ -146,7 +146,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookRadius: 10
+  playerInRange: 0
+  attackRate: 2
+  nextAttackTime: 0
   AttackDistance: 4.5
   takeDamage: 0
+  dealDamage: 0
+  damageTimer: 0
   enemyHealth: 100
   smallerEnemy: {fileID: 0}
+  spawnSmallerEnemies: 0
+  count: 0

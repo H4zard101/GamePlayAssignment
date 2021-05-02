@@ -1,6 +1,7 @@
 ﻿using Attempt_2;
 using System.Collections;
 using System.Collections.Generic;
+using Attempt_2.Player;
 using UnityEngine;
 
 public class StepThroughPortal : MonoBehaviour

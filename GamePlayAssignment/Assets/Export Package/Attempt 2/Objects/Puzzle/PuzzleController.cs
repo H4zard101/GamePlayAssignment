@@ -1,7 +1,7 @@
 ﻿using Attempt_2.Objects.Doors;
 using UnityEngine;
 
-namespace Export_Package.Attempt_2.Objects.Puzzle
+namespace Attempt_2.Objects.Puzzle
 {
     public class PuzzleController : MonoBehaviour
     {
@@ -38,7 +38,7 @@ namespace Export_Package.Attempt_2.Objects.Puzzle
         // Update is called once per frame
         void Update()
         {
-            debugAngles = puzzleRings[2].transform.rotation.eulerAngles.normalized.x;
+            //debugAngles = puzzleRings[2].transform.rotation.eulerAngles.normalized.x;
 
             SwitchController();
             RingRotationCheck();

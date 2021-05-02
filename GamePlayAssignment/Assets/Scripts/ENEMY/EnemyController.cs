@@ -1,17 +1,22 @@
-﻿ using System.Collections;
+﻿ using System;
+ using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+ using Attempt_2;
+ using Attempt_2.Player;
+ using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
     public float lookRadius = 10f;
-    public static bool playerInRange = false;
-    public static float attackRate = 2f;
-    public static float nextAttackTime = 0f;
+    public bool playerInRange = false;
+    public float attackRate = 2f;
+    public float nextAttackTime = 0f;
     public float AttackDistance = 4.5f;
     
     public bool takeDamage;
+    public bool dealDamage;
+    public float damageTimer;
     public float enemyHealth = 100;
 
     private Material enemyMat;
@@ -29,13 +34,14 @@ public class EnemyController : MonoBehaviour
     {
         enemyMat = GetComponent<Renderer>().material;
         enemyMat.color = Color.white;
-        target = PlayerManager.instance.player.transform;
+        target = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         float distance = Vector3.Distance(target.position, transform.position);
 
         if (distance <= lookRadius)
@@ -46,11 +52,15 @@ public class EnemyController : MonoBehaviour
             {
                 playerInRange = true;
             }
+            else
+            {
+                playerInRange = false;
+            }
         }
 
         if (takeDamage)
         {
-            StartCoroutine(takeDamageCoroutine());
+            StartCoroutine(TakeDamageCoroutine());
             takeDamage = false;
         }
 
@@ -65,15 +75,35 @@ public class EnemyController : MonoBehaviour
             {
                 Instantiate(smallerEnemy, transform.position, transform.rotation);
             }
-            
-             
-            Debug.Log("dead");
+
+            Debug.Log("Enemy dead");
+        }
+        
+    }
+
+    private void FixedUpdate()
+    {
+        
+        if (playerInRange)
+        {
+            damageTimer += Time.fixedDeltaTime;
+            if (damageTimer > 3)
+            {
+                //Debug.Log(damageTimer);
+                target.GetComponent<PlayerMovement2>().playerHealth -= 10;
+                target.GetComponent<PlayerMovement2>().takeDamage = true;
+                damageTimer = 0;
+            }
+        }
+        else
+        {
+            damageTimer = 0;
         }
     }
-    
-    IEnumerator takeDamageCoroutine()
+
+    IEnumerator TakeDamageCoroutine()
     {
-        Debug.Log("ouch");
+        Debug.Log("Enemy ouch");
         enemyMat.color = Color.red;
         yield return new WaitForSeconds(.5f);
         enemyMat.color = Color.white;

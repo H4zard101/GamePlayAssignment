@@ -32,21 +32,21 @@ namespace Attempt_2
          {
              rb = GetComponent<Rigidbody>();
          }*/
- 
+        Vector3 lastPosition, lastMove;
         void Update()
         {
             transform.position = new Vector3(originalY + ((float)System.Math.Sin(Time.time) * floatStrength),
                 transform.position.y,
                 transform.position.z);
-        }
+        /*}*/
         
-            Vector3 lastPosition, lastMove;
+            
  
-            void FixedUpdate()
-            {
+            /*void LateUpdate()
+            {*/
                 lastMove = transform.position - lastPosition;
                 lastPosition = transform.position;
-            }
+        }
  
             void OnTriggerStay(Collider other)
             {

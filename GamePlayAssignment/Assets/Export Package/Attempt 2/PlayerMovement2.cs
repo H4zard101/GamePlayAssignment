@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics.SymbolStore;
+﻿using System.Collections;
 using Attempt_2.Animation;
 using Attempt_2.Objects.Doors;
+using Attempt_2.Splines;
 using UnityEngine;
 using Vector2 = System.Numerics.Vector2;
 
-namespace Attempt_2
+namespace Attempt_2.Player
 {
     public class PlayerMovement2 : MonoBehaviour
     {
@@ -15,19 +14,21 @@ namespace Attempt_2
         /** PLAYER STATS **/
         
         public float currentMovementSpeed;
+        public float jumpHeight = 2.0F;
+        public float attackDamage = 30;
         
         public int currentJumpCount;
+        public int playerHealth = 100;
         
         public bool isGrounded;
         public bool hasHammer;
-
+        public bool isOnSpline;
+        public bool takeDamage = false;
+        
         private bool equipHammer;
         private bool canJump = true;
         
-        public float jumpHeight = 2.0F;
 
-        public float attackDamage = 30;
-        
         /** INPUTS AND DIRECTIONS **/
         public float moveVertical;
         public float moveHorizontal;
@@ -42,30 +43,33 @@ namespace Attempt_2
         
         /** SYSTEM AND CONSTANTS **/ 
         
+        public float gravity = 25.0F;
         public float maxMovementSpeed;
         public int maxJumpCount;
 
         public Rigidbody playerRigidBody;
         public Animator playerAnimator;
-
+        private Material playerMat;
+        
         private bool maxJumpCountReached;
         
-        public float gravity = 25.0F;
         private float maxVelocityChange = 10.0F;
         private float groundCheckDistance = .2f;
-
+        private float attackTimerGoal;
+        
         public float attackTimer;
-        public float attackTimerGoal;
+        
         public int currentAttackCount;
         public int queuedHits;
         
         [SerializeField] private LayerMask groundMask;
         public LayerMask enemyLayers;
-        
+
         /** CAMERA **/
 
-        public Transform cam;
-        
+        public GameObject[] cameras;
+        public GameObject activeCamera;
+
         private float smoothTurnVelocity;
         private float smoothTurnTime = .1F;
        
@@ -84,41 +88,101 @@ namespace Attempt_2
         private static readonly int JumpCount = Animator.StringToHash("jump count");
         private static readonly int MaxJumpCountReached = Animator.StringToHash("max jump count reached");
         private static readonly int AttackCount = Animator.StringToHash("attack count");
+        private static readonly int PlayerHealth = Animator.StringToHash("player health");
+        
+        [Space(10)]
+        /** OBJECTS IN WORLD **/
+        public GameObject splineArea;
+        
+        /** SCRIPTS **/
 
+        private SplineTrigger splineTrigger;
+        
         /** DEBUG **/
         public float Debug_current_speed;
         
         // Start is called before the first frame update
         private void Start()
         {
+            playerMat = GetComponentInChildren<Renderer>().material;
+            
+            splineArea = GameObject.Find("SplineTriggerBox");
+           
             playerRigidBody = GetComponent<Rigidbody>();
             playerAnimator = GetComponent<Animator>();
+            
+            activeCamera = cameras[0].gameObject;
+            
         }
         
         // Update is called once per frame
         private void Update()
         {
+            
             DebugSpeed();
             
             //Debug.Log(pressedAttack);
             
             isGrounded = Physics.CheckSphere(transform.position,groundCheckDistance, groundMask);
-
+            
             Inputs();
             PlayerAttack();
             PlayerDraw();
             PlayerJump();
             Animation();
+            
+            CameraActive();
+            
+            if (takeDamage)
+            {
+                StartCoroutine(TakeDamageCoroutine());
+                takeDamage = false;
+            }
         }
+        IEnumerator TakeDamageCoroutine()
+        {
+            Debug.Log("Player ouch");
+            playerMat.color = Color.red;
+            yield return new WaitForSeconds(.5f);
+            if (playerHealth > 0 )
+            {
+                playerMat.color = Color.white;
+            }
+        }
+        
         private void Inputs()
         {
-            pressedJump = Input.GetButtonDown("Jump");
-            pressedDraw = Input.GetButtonDown("Fire1");
-            pressedAttack = Input.GetButtonDown("Fire3");
+            if (Input.GetKey(KeyCode.K))
+            {
+                playerHealth = 0;
+            }
+            if (Input.GetKey(KeyCode.L))
+            {
+                playerHealth += 1;
+            }
             
-            moveHorizontal = Input.GetAxis("Horizontal");
-            moveVertical   = Input.GetAxis("Vertical");
-            
+            if (playerHealth > 1)
+            {
+                pressedJump = Input.GetButtonDown("Jump");
+                pressedDraw = Input.GetButtonDown("Fire1");
+                pressedAttack = Input.GetButtonDown("Fire3");
+                
+                moveHorizontal = Input.GetAxis("Horizontal");
+                if (!isOnSpline)
+                {
+                    moveVertical = Input.GetAxis("Vertical");
+                }
+                else
+                {
+                    moveVertical = 0;
+                }
+                
+            }
+            else
+            {
+                moveHorizontal = 0;
+                moveVertical   = 0;
+            }
             input3D = new Vector3(moveHorizontal, 0, moveVertical);
         }
         private void FixedUpdate()
@@ -195,7 +259,6 @@ namespace Attempt_2
                 {
                     objectHit.GetComponent<EnemyController>().enemyHealth -= attackDamage;
                     objectHit.GetComponent<EnemyController>().takeDamage = true;
-
                 }
                 else if (objectHit.CompareTag("Button"))
                 {
@@ -279,11 +342,31 @@ namespace Attempt_2
             // for the character to reach at the apex.
             return Mathf.Sqrt(2 * jumpHeight * gravity);
         }
+
+        private void CameraActive()
+        {
+            isOnSpline = splineArea.GetComponent<SplineTrigger>().playerInSplineArea;
+
+            if (isOnSpline)
+            {
+                if (moveVertical == 0)
+                {
+                    activeCamera = cameras[1].gameObject;
+                }
+            }
+            else
+            {
+                if (moveVertical == 0)
+                {
+                    activeCamera = cameras[0].gameObject;
+                }
+            }
+        }
         
         private void CameraMove()
         {
-            Vector3 camForward = cam.forward;
-            Vector3 camRight = cam.right;
+            Vector3 camForward = activeCamera.transform.forward;
+            Vector3 camRight = activeCamera.transform.right;
 
             camForward.y = 0f;
             camRight.y = 0f;
@@ -292,10 +375,12 @@ namespace Attempt_2
             camRight = camRight.normalized;
 
             direction = (camForward * input3D.z + camRight * input3D.x);
+            
             Vector2 input2D = new Vector2(moveHorizontal, moveVertical);
+            
             if (input2D != Vector2.Zero)
             {
-                float targetRotation = Mathf.Atan2(input2D.X, input2D.Y) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                float targetRotation = Mathf.Atan2(input2D.X, input2D.Y) * Mathf.Rad2Deg + activeCamera.transform.eulerAngles.y;
                 transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation,
                     ref smoothTurnVelocity, smoothTurnTime);
             }
@@ -332,7 +417,7 @@ namespace Attempt_2
                 playerAnimator.SetTrigger(PressedUnsheathTrg);
                 StartCoroutine(Unsheath());
             }
-            
+
             playerAnimator.SetBool(MaxJumpCountReached, maxJumpCountReached);
             playerAnimator.SetInteger(JumpCount, currentJumpCount);
             playerAnimator.SetFloat(MovementSpeed, currentSpeed);
@@ -340,6 +425,8 @@ namespace Attempt_2
             playerAnimator.SetBool (Grounded,isGrounded);
             playerAnimator.SetFloat(VelocityY, playerRigidBody.velocity.y);
             playerAnimator.SetInteger(AttackCount, currentAttackCount);
+            playerAnimator.SetInteger(PlayerHealth, playerHealth);
+            
         }
         private void Set(int value)
         {

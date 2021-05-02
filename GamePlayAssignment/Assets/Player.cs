@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Attempt_2.Player;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -11,22 +12,33 @@ public class Player : MonoBehaviour
 
     public healthBar healthBar;
 
-    public bool playerIsDead = false;
+    private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = maxHealth;
+        //currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+        
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        
+        healthBar.SetHealth(player.GetComponent<PlayerMovement2>().playerHealth);
+
+        /*if (player.GetComponent<PlayerMovement2>().playerHealth <= 0)
+        {
+            //playerIsDead = true;
+            Debug.Log("player is dead");
+        }*/
+        
+        /*if (Input.GetKeyDown(KeyCode.K))
         {
             TakeDamge(20);
-        }
-        if (EnemyController.playerInRange == true)
+        }*/
+        /*if (EnemyController.playerInRange == true)
         {
             if (Time.time >= EnemyController.nextAttackTime)
             {
@@ -34,20 +46,20 @@ public class Player : MonoBehaviour
                 EnemyController.playerInRange = false;
                 EnemyController.nextAttackTime = Time.time + 2f / EnemyController.attackRate;
             }
-        }
+        }*/
     }
 
-    void TakeDamge(int damage)
+    /*void TakeDamge(int damage)
     {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
 
         if (currentHealth <= 0)
         {
-            playerIsDead = true;
+            //playerIsDead = true;
             Debug.Log("player is dead");
         }
-    }
+    }*/
 
 
 }

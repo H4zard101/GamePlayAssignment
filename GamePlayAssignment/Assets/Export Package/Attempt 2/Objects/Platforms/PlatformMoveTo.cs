@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Attempt_2.Objects.Platforms
 {
@@ -8,6 +9,8 @@ namespace Attempt_2.Objects.Platforms
         public Vector3 targetPosition;
 
         public bool automatic;
+        public bool Slerp;
+        public bool tripComplete;
         private bool playerOnBoard;
         
         [Range(0,15)]
@@ -19,12 +22,34 @@ namespace Attempt_2.Objects.Platforms
         }
 
         // Update is called once per frame
-        void FixedUpdate()
+        void Update()
         {
-            if (automatic)
+            if ((automatic || playerOnBoard) && !tripComplete)
             {
-                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * movementSpeed);
+                if (Slerp)
+                {
+                    transform.position = Vector3.Slerp(transform.position, targetPosition, Time.deltaTime * movementSpeed);
+                }
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * movementSpeed);
+                }
+            }
+
+            if (Math.Abs(transform.position.x - targetPosition.x) < .025F || Math.Abs(transform.position.y - targetPosition.y) < .025F ||
+                Math.Abs(transform.position.z - targetPosition.z) < .025F)
+            {
+                tripComplete = true;
             }
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!automatic)
+            {
+                playerOnBoard = true;
+            }
+        }
+        
     }
 }
