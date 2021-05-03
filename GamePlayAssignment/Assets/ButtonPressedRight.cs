@@ -7,6 +7,7 @@ public class ButtonPressedRight : MonoBehaviour
     public GameObject Text;
     public Animator anim;
     public Animator anim2;
+    public Animator panningCamera;
 
     public Camera mainCam;
     public Camera doorPanCam;
@@ -28,7 +29,6 @@ public class ButtonPressedRight : MonoBehaviour
         if (doorOpening)
         {
             mainCam.enabled = false;
-            doorPanCam.Reset();
             doorPanCam.enabled = true;
         }
         if (doorOpen)
@@ -61,8 +61,10 @@ public class ButtonPressedRight : MonoBehaviour
 
     IEnumerator openDoor()
     {
+        doorPanCam.Reset();
         doorOpening = true;
-        yield return new WaitForSeconds(1);
+        panningCamera.SetBool("Play", true);
+        yield return new WaitForSeconds(2);
         anim.SetBool("trigger", true);
         anim2.SetBool("triggered", true);
         buttonPressedRight = true;

@@ -7,9 +7,10 @@ public class TriggerButtonPressed : MonoBehaviour
     public GameObject Text;
     public Animator anim;
     public Animator anim2;
+    public Animator panningCamera;
 
     public Camera mainCam;
-    public Camera doorPanCam;
+    public Camera panCam;
 
     public static bool buttonPressedLeft = false;
     public bool doorOpening;
@@ -20,21 +21,20 @@ public class TriggerButtonPressed : MonoBehaviour
         doorOpening = false;
         doorOpen = false;
         mainCam.enabled = true;
-        doorPanCam.enabled = false;
+        panCam.enabled = false;
     }
 
     void Update()
     {
         if (doorOpening)
         {
+            panCam.enabled = true;
             mainCam.enabled = false;
-            doorPanCam.Reset();
-            doorPanCam.enabled = true;
         }
         if (doorOpen)
         {
+            panCam.enabled = false;
             mainCam.enabled = true;
-            doorPanCam.enabled = false;
         }
     }
 
@@ -60,11 +60,12 @@ public class TriggerButtonPressed : MonoBehaviour
     IEnumerator openDoor()
     {
         doorOpening = true;
+        panningCamera.SetBool("Play", true);
         yield return new WaitForSeconds(1);
         anim.SetBool("trigger", true);
         anim2.SetBool("triggered", true);
         buttonPressedLeft = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
         doorOpening = false;
         doorOpen = true;
     }
