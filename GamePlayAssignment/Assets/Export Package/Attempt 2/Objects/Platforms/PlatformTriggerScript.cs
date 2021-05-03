@@ -6,7 +6,7 @@ namespace Attempt_2.Objects.Platforms
     {
         Vector3 lastPosition, lastMove;
  
-        void FixedUpdate()
+        void Update()
         {
             lastMove = transform.position - lastPosition;
             lastPosition = transform.position;
