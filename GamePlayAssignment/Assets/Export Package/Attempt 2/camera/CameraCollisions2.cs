@@ -30,20 +30,17 @@ namespace Attempt_2.camera
         // Update is called once per frame
         void Update()
         {
+            Vector3 desiredCamPos = transform.parent.TransformPoint((dollyDir * maxDistance));
+            RaycastHit hit;
+            if (Physics.Linecast(transform.parent.position, desiredCamPos, out hit, ~ignoreThisLayerMask))
+            { currentDistance = Mathf.Clamp((hit.distance * 0.87f), minDistance, maxDistance);
+            }
+            else
+            {
+                currentDistance = maxDistance;
+            }
 
-                
-                Vector3 desiredCamPos = transform.parent.TransformPoint((dollyDir * maxDistance));
-                RaycastHit hit;
-                if (Physics.Linecast(transform.parent.position, desiredCamPos, out hit, ~ignoreThisLayerMask))
-                {
-                    currentDistance = Mathf.Clamp((hit.distance * 0.87f), minDistance, maxDistance);
-                }
-                else
-                {
-                    currentDistance = maxDistance;
-                }
-
-                transform.localPosition = Vector3.Lerp(transform.localPosition, dollyDir * currentDistance, Time.deltaTime * smooth);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, dollyDir * currentDistance, Time.deltaTime * smooth);
         }
     }
 }
