@@ -5,8 +5,7 @@
 GamePlayAssignment/[Ll]ibrary/
 GamePlayAssignment/[Tt]emp/
 GamePlayAssignment/[Oo]bj/
-GamePlayAssignment/[Bb]uild/
-GamePlayAssignment/[Bb]uilds/
+
 GamePlayAssignment/[Ll]ogs/
 GamePlayAssignment/[Mm]emoryCaptures/
 
@@ -52,8 +51,8 @@ ExportedObj/
 sysinfo.txt
 
 # Builds
-*.apk
-*.unitypackage
+.apk
+.unitypackage
 
 # Crashlytics generated file
 crashlytics-build.properties
