@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Attempt_2.Player;
+using Export_Package.Attempt_2;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
@@ -30,9 +31,21 @@ public class StepThroughPortal : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            Debug.Log("jumped through");
             sceneIndex += 1;
             
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + sceneIndex);
+            if (sceneIndex > 3)
+            {
+                sceneIndex = 0;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 4);
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + sceneIndex);
+            }
+            
+            
+
             
             //lowGravity = true;
             //StartCoroutine(Teleport());

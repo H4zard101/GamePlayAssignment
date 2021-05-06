@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Attempt_2.Player;
+using Export_Package.Attempt_2;
 using UnityEngine;
 
 public class killScript : MonoBehaviour

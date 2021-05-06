@@ -18,7 +18,7 @@ namespace Attempt_2.camera
         public Vector3 originalPosition;
 
         // Start is called before the first frame update
-        void Awake()
+        void OnEnable()
         {
             originalPosition = transform.position;
             

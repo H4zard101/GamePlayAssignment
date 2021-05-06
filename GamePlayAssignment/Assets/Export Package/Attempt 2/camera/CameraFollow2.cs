@@ -10,7 +10,7 @@ namespace Attempt_2.camera
         public Vector3 offset;
         private Vector3 Velocity = Vector3.zero;
     
-        void Update ()
+        void Update()
         {
             Vector3 desiredPosition = target.position + offset;
             Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref Velocity, smoothSpeed);

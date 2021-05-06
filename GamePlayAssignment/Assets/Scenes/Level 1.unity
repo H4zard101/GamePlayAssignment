@@ -5771,12 +5771,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0454182faa23581429e4e8851f0ea5bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &356981603 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7882263271970941778, guid: 8dc04379729ef7745b2d5ca3d84cda1b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1349159635}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &357297382
 GameObject:
   m_ObjectHideFlags: 0
@@ -32188,7 +32182,7 @@ GameObject:
   - component: {fileID: 205695075296364728}
   m_Layer: 10
   m_Name: Mesh-Hammer
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33057,7 +33051,7 @@ MonoBehaviour:
   takeDamage: 0
   moveVertical: 0
   moveHorizontal: 0
-  RespawnPoint: {fileID: 0}
+  respawnPoint: {fileID: 0}
   gravity: 25
   maxMovementSpeed: 10
   maxJumpCount: 1
@@ -33074,13 +33068,12 @@ MonoBehaviour:
     m_Bits: 2048
   cameras:
   - {fileID: 4342838008557001533}
-  - {fileID: 1276274639}
   activeCamera: {fileID: 0}
   overrideControllers:
   - {fileID: 22100000, guid: 1c3cc6e4a4d02cd46878dde238fbfa26, type: 2}
   - {fileID: 22100000, guid: f380fa817956fab4db6d0dba01bb2ac5, type: 2}
   overrider: {fileID: 454483125339046688}
-  splineArea: {fileID: 356981603}
+  splineArea: {fileID: 0}
   Debug_current_speed: 0
 --- !u!114 &454483125339046695
 MonoBehaviour:

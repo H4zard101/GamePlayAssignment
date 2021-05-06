@@ -5,7 +5,7 @@ using Attempt_2.Splines;
 using UnityEngine;
 using Vector2 = System.Numerics.Vector2;
 
-namespace Attempt_2.Player
+namespace Export_Package.Attempt_2
 {
     public class PlayerMovement2 : MonoBehaviour
     {
@@ -28,6 +28,7 @@ namespace Attempt_2.Player
         private bool equipHammer;
         private bool canJump = true;
         
+       
 
         /** INPUTS AND DIRECTIONS **/
         public float moveVertical;
@@ -104,7 +105,7 @@ namespace Attempt_2.Player
         public float Debug_current_speed;
         
         // Start is called before the first frame update
-        private void Start()
+        private void OnEnable()
         {
             respawnPoint = gameObject;
             
@@ -344,6 +345,7 @@ namespace Attempt_2.Player
         {
             // From the jump height and gravity we deduce the upwards speed 
             // for the character to reach at the apex.
+            Debug.Log("Gravity in CalculateJumpVerticalSpeed: " +gravity);
             return Mathf.Sqrt(2 * jumpHeight * gravity);
         }
 

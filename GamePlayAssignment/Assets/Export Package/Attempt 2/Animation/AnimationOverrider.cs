@@ -6,7 +6,7 @@ namespace Attempt_2.Animation
     {
         private Animator animator;
 
-        private void Awake()
+        private void OnEnable()
         {
             animator = GetComponent<Animator>();
         }
