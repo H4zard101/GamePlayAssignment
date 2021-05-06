@@ -11,10 +11,15 @@ namespace Attempt_2.Player
         public GameObject hammerPickupEffect;
         //private MeshRenderer meshRenderer;
         //private SphereCollider sphereCollider;
+
+        private bool sprintInfinite;
+        private bool doubleJumpInfinite;
+        private bool hammerInfinite;
         
         private bool sprintSpent;
         private bool doubleJumpSpent;
         private bool hammerSpent;
+        
         
         private PlayerMovement2 stats;
         // Start is called before the first frame update
@@ -50,10 +55,13 @@ namespace Attempt_2.Player
                     
                     Debug.Log("Picked up Sprint");
                     
-                    stats.maxMovementSpeed *= 2;
-                    sprintSpent = true;
+                    if(!sprintInfinite)
+                    {
+                        stats.maxMovementSpeed *= 2;
+                        sprintSpent = true;
+                        Destroy(GameObject.FindWithTag("PowerupSprint"));
+                    }
                     
-                    Destroy(GameObject.FindWithTag("PowerupSprint"));
                     //objectCollidedWith.GetComponent<MeshRenderer>().enabled = false;
                     //objectCollidedWith.GetComponent<Collider>().enabled = false;
                     
@@ -70,14 +78,16 @@ namespace Attempt_2.Player
                     Instantiate(doubleJumpPickupEffect, objectTransform.position, objectTransform.rotation);
                     
                     Debug.Log("Picked up Double Jump");
+
+                    if (!doubleJumpInfinite)
+                    {
+                        doubleJumpSpent = true;
+                        Destroy(GameObject.FindWithTag("PowerupDJ"));
+                        //objectCollidedWith.GetComponent<MeshRenderer>().enabled = false;
+                        //objectCollidedWith.GetComponent<Collider>().enabled = false;
+                        stats.maxJumpCount++;
+                    }
                     
-                    doubleJumpSpent = true;
-                    
-                    Destroy(GameObject.FindWithTag("PowerupDJ"));
-                    //objectCollidedWith.GetComponent<MeshRenderer>().enabled = false;
-                    //objectCollidedWith.GetComponent<Collider>().enabled = false;
-                    
-                    stats.maxJumpCount++;
                 }
                 
             }
@@ -88,13 +98,15 @@ namespace Attempt_2.Player
                 {
                     var objectTransform = objectCollidedWith.transform;
                     Instantiate(hammerPickupEffect, objectTransform.position, objectTransform.rotation);
-                    
-                    Debug.Log("Picked up Hammer");
 
-                    Destroy(GameObject.FindWithTag("Hammer"));
+                    if (!hammerInfinite)
+                    {
+                        Destroy(GameObject.FindWithTag("Hammer"));
+                    }
+                    Debug.Log("Picked up Hammer");
+                    
                     //objectCollidedWith.GetComponent<MeshRenderer>().enabled = false;
                     //objectCollidedWith.GetComponent<Collider>().enabled = false;
-                    
                     stats.hasHammer = true;
                 }
             }

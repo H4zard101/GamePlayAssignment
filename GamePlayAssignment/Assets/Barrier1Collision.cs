@@ -13,6 +13,7 @@ public class Barrier1Collision : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
         respawn = false;
         barrier.SetActive(true);
     }

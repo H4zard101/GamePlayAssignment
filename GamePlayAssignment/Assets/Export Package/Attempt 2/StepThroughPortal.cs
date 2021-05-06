@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Attempt_2.Player;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class StepThroughPortal : MonoBehaviour
@@ -11,8 +12,11 @@ public class StepThroughPortal : MonoBehaviour
     public GameObject portal2;
     public bool lowGravity;
 
+    public int sceneIndex;
+
     private void Awake()
     {
+        player = GameObject.FindWithTag("Player");
         stats = GameObject.Find("Hammer Warrior").GetComponent<PlayerMovement2>();
     }
 
@@ -26,8 +30,12 @@ public class StepThroughPortal : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            lowGravity = true;
-            StartCoroutine(Teleport());
+            sceneIndex += 1;
+            
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + sceneIndex);
+            
+            //lowGravity = true;
+            //StartCoroutine(Teleport());
         }
     }
 

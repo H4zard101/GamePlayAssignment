@@ -40,8 +40,10 @@ namespace Attempt_2.Player
         private bool isJumping;
         private bool pressedDraw;
         private bool pressedAttack;
-        
-        /** SYSTEM AND CONSTANTS **/ 
+
+        /** SYSTEM AND CONSTANTS **/
+
+        public GameObject respawnPoint;
         
         public float gravity = 25.0F;
         public float maxMovementSpeed;
@@ -104,6 +106,8 @@ namespace Attempt_2.Player
         // Start is called before the first frame update
         private void Start()
         {
+            respawnPoint = gameObject;
+            
             playerMat = GetComponentInChildren<Renderer>().material;
             
             splineArea = GameObject.Find("SplineTriggerBox");
@@ -345,7 +349,11 @@ namespace Attempt_2.Player
 
         private void CameraActive()
         {
-            isOnSpline = splineArea.GetComponent<SplineTrigger>().playerInSplineArea;
+            if (splineArea != null)
+            { 
+                isOnSpline = splineArea.GetComponent<SplineTrigger>().playerInSplineArea;
+            }
+            
 
             if (isOnSpline)
             {
